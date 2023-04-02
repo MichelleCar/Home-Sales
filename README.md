@@ -26,7 +26,7 @@ Spark SQL will make it possible for developers to:
 
 In addition, Spark SQL comes with columnar storage, cost-based optimizer, and code generation, all of which help to speed up query execution. At the same time, it is scalable to thousands of nodes and searches that take many hours by using the Spark engine, which offers complete fault tolerance during the middle of a query and eliminates the need to worry about using a different engine for historical data.
 
-<img width="608" alt="Screenshot 2023-04-02 at 5 48 45 PM" src="https://user-images.githubusercontent.com/115101031/229380792-aaaad0d2-61f3-4055-8dcc-3aabb815846a.png">
+<img width="635" alt="Screenshot 2023-04-02 at 6 45 43 PM" src="https://user-images.githubusercontent.com/115101031/229383164-ad283307-5afd-455e-b3a0-ca6225303531.png">
 
 
 ## Case Study
@@ -91,4 +91,11 @@ After importing the necessary PySpark SQL functions:
 ### Results
 Before caching my table data, the runtime to generate the "view" rating for the average price of a home, rounded to two decimal places, where the homes are greater than or equal to $350,000 was **0.2004401683807373 seconds**.  After caching the table, it was **0.11345887184143066 seconds**, showing a significant improvement in processing time. After partitioned by the "date_built" field on the formatted parquet home sales data and created a temporary table for the parquet data, and rerunning the query that filters out the view ratings with an average price of greater than or equal to $350,000, the runtime was **0.29360389709472656 seconds**.
 
+In Spark SQL caching is a common technique for reusing some computation. It has the potential to speedup queries that are using the same data, as was evident when comparing the cached and uncached runtime. Partitioning is a way to split the data into multiple partitions so that you can execute transformations on multiple partitions in parallel which allows completing the job faster.  However, in this case, our performance time increased compared to the uncached data.  This could be the result of:
+* If there are too few partitions, then the data size of each partition may be very large, and the tasks to process these large partitions may slow down the query.
+* If there are too many partitions, then the data size of each partition may be very small, and there will be a lot of small network data fetches to read, which can also slow down the query.
 
+### Summary
+In essence, big data consists of large and complex sets of information that are so voluminous that traditional data processing software can’t manage them. This offers both opportunities and challenges in data analytics.
+
+Big data analytics provides many benefits, but effective deployment must overcome some challenges. Choosing the right tools and understanding when and how to employ them to perform the analysis is not always a simple process.
